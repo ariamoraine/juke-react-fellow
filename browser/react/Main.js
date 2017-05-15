@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 import Sidebar from './Sidebar';
 import Footer from './Footer';
 import Albums from './Albums';
-import axios from 'axios';
+import SingleAlbum from './SingleAlbum'
 
 export default class Main extends Component {
 
   constructor (props) {
     super(props);
     this.state = {
-      albums: []
-    }
+      albums: [],
+      selectedAlbum: {}
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick (event) {
+    console.log("INSIDE CLICK", event.props.album);
+    this.setState({selectedAlbum: event.props.album})
   }
 
   componentDidMount () {
@@ -33,14 +43,15 @@ export default class Main extends Component {
       <div id='main' className='container-fluid'>
         <Sidebar />
         <div className="col-xs-10">
-        <h3>Albums</h3>
-        <div className="row">
-        {
-          this.state.albums.map(album => {
-            return (<Albums album={album} key={album.id} />)
-          })
-        }
-        </div>
+          <h3>Albums</h3>
+          <div className="row">
+          {
+            this.state.albums.map(album => {
+              return (<Albums album={album} handleClick={this.handleClick} key={album.id} />)
+            })
+          }
+          </div>
+          <SingleAlbum album={this.selectedAlbum}/>
         </div>
         <Footer />
       </div>
