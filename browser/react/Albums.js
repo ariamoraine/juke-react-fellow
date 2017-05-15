@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 
 export default class Album extends Component {
   render () {
-    console.log(this.props)
+    console.log(this.props.album)
     return (
-      <div className="col-xs-4" key={this.props.album.id}>
+      <div className="col-xs-4">
         <a className="thumbnail" href="#">
-          <img src="http://placeholdit.imgix.net/~text?txtsize=33&txt=ALBUMoneIMAGE&w=300&h=300" />
+          <img src={this.props.album.imageUrl} />
           <div className="caption">
             <h5>
               <span>{this.props.album.name}</span>
