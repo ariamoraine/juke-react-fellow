@@ -22,9 +22,9 @@ export default class SingleAlbum extends Component {
           <tbody>
             {this.props.album.songs ? this.props.album.songs.map(song => {
               return (
-                <tr>
+                <tr key={song.id}>
                   <td>
-                    <button className="btn btn-default btn-xs">
+                    <button className="btn btn-default btn-xs" onClick={() => this.props.startPlaying(song)}>
                       <span className="glyphicon glyphicon-play"></span>
                     </button>
                   </td>

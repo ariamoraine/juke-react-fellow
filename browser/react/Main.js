@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 import Footer from './Footer';
 import Albums from './Albums';
 import SingleAlbum from './SingleAlbum'
+const audio = document.createElement('audio');
 
 export default class Main extends Component {
 
@@ -16,11 +17,25 @@ export default class Main extends Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+    this.selectedAlbumReset = this.selectedAlbumReset.bind(this);
+    this.startPlaying = this.startPlaying.bind(this)
+  }
+
+  selectedAlbumReset () {
+    console.log("INSIDE RESET");
+    this.setState({selectedAlbum: {}});
+  }
+
+  startPlaying (song) {
+    console.log(song)
+    axios.get(`api/songs/${song.id}/audio`)
+    .then(results => console.log("data", results));
+    audio.src = 'https://learndotresources.s3.amazonaws.com/workshop/5616dbe5a561920300b10cd7/Dexter_Britain_-_03_-_The_Stars_Are_Out_Interlude.mp3';
+    audio.load();
+    audio.play();
   }
 
   handleClick (album) {
-    console.log("INSIDE CLICK", album);
-    // this.setState({selectedAlbum: event})
     axios.get(`/api/albums/${album.id}`)
     .then(res => res.data)
     .then(album => {
@@ -46,12 +61,11 @@ export default class Main extends Component {
   }
 
   render () {
-    console.log("selected", this.state.selectedAlbum)
     return (
       <div id='main' className='container-fluid'>
-        <Sidebar />
+        <Sidebar reset={this.selectedAlbumReset} />
         <div className="col-xs-10">
-          {this.state.selectedAlbum.id ? <SingleAlbum album={this.state.selectedAlbum}/> :
+          {this.state.selectedAlbum.id ? <SingleAlbum album={this.state.selectedAlbum} startPlaying={this.startPlaying} /> :
           <div>
             <h3>Albums</h3>
             <div className="row">
