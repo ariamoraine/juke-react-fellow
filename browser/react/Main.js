@@ -18,9 +18,16 @@ export default class Main extends Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleClick (event) {
-    console.log("INSIDE CLICK", event.props.album);
-    this.setState({selectedAlbum: event.props.album})
+  handleClick (album) {
+    console.log("INSIDE CLICK", album);
+    // this.setState({selectedAlbum: event})
+    axios.get(`/api/albums/${album.id}`)
+    .then(res => res.data)
+    .then(album => {
+      album.imageUrl = `/api/albums/${album.id}/image`;
+      this.setState({ selectedAlbum: album })
+    }
+    );
   }
 
   componentDidMount () {
@@ -39,19 +46,24 @@ export default class Main extends Component {
   }
 
   render () {
+    console.log("selected", this.state.selectedAlbum)
     return (
       <div id='main' className='container-fluid'>
         <Sidebar />
         <div className="col-xs-10">
-          <h3>Albums</h3>
-          <div className="row">
-          {
-            this.state.albums.map(album => {
-              return (<Albums album={album} handleClick={this.handleClick} key={album.id} />)
-            })
-          }
+          {this.state.selectedAlbum.id ? <SingleAlbum album={this.state.selectedAlbum}/> :
+          <div>
+            <h3>Albums</h3>
+            <div className="row">
+            {
+              this.state.albums.map(album => {
+                return (<Albums album={album} handleClick={this.handleClick} key={album.id} />)
+              })
+            }
+            </div>
           </div>
-          <SingleAlbum album={this.selectedAlbum}/>
+        }
+
         </div>
         <Footer />
       </div>

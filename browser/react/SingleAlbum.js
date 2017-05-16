@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 export default class SingleAlbum extends Component {
 
   render () {
-  console.log(this.props)
+  console.log("INSIDE SINGLE ALBUM", this.props)
     return (
       <div className="album col-xs-10">
         <div>
-          <h3>I SHOULD BE AN ALBUM NAME</h3>
-          <img src="https://placeholdit.imgix.net/~text?txtsize=33&txt=IshouldBEanIMAGE&w=300&h=300" className="img-thumbnail" />
+          <h3>{this.props.album.name || "Placeholder"}</h3>
+          <img src={this.props.album.imageUrl || "https://placeholdit.imgix.net/~text?txtsize=33&txt=IshouldBEanIMAGE&w=300&h=300"}className="img-thumbnail" />
         </div>
         <table className='table'>
           <thead>
@@ -20,26 +20,20 @@ export default class SingleAlbum extends Component {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <button className="btn btn-default btn-xs">
-                  <span className="glyphicon glyphicon-play"></span>
-                </button>
-              </td>
-              <td>I SHOULD BE A SONG NAME</td>
-              <td>I SHOULD BE A STRING OF THIS SONG'S ARTISTS</td>
-              <td>I SHOULD BE A SONG GENRE</td>
-            </tr>
-            <tr>
-              <td>
-                <button className="btn btn-default btn-xs">
-                  <span className="glyphicon glyphicon-play"></span>
-                </button>
-              </td>
-              <td>I SHOULD BE ANOTHER SONG NAME</td>
-              <td>I SHOULD BE A STRING OF THAT SONG'S ARTISTS</td>
-              <td>I SHOULD BE A SONG GENRE</td>
-            </tr>
+            {this.props.album.songs ? this.props.album.songs.map(song => {
+              return (
+                <tr>
+                  <td>
+                    <button className="btn btn-default btn-xs">
+                      <span className="glyphicon glyphicon-play"></span>
+                    </button>
+                  </td>
+                  <td>{song.name}</td>
+                  <td>{song.artists[0].name}</td>
+                  <td>{song.genre}</td>
+                </tr>
+              )
+            }) : null }
           </tbody>
         </table>
       </div>
